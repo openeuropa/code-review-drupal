@@ -1,4 +1,4 @@
 /vendor/
 composer.lock
 grumphp.yml
-docker-compose.*.yml
+phpstan.neon

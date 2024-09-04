@@ -78,3 +78,39 @@ GrumPHP already has a series of tasks that can be used out of the box, you can f
 [GrumPHP tasks page](https://github.com/phpro/grumphp/blob/v2.x/doc/tasks.md).
 
 If you wih you can create your own tasks as explained in the [GrumPHP extensions page](https://github.com/phpro/grumphp/blob/v2.x/doc/extensions.md).
+
+### Transition from code-review 2.x
+
+If you wish to transition to code-review-drupal from code-review version 2.x, please replace the package via Composer:
+
+```bash
+composer remove --dev openeuropa/code-review
+composer require --dev openeuropa/code-review-drupal
+```
+
+Besides replacement of the package, some adjustments are needed in `grumphp.yml` file.
+
+This component removes ExtraTasks extension. Any aditional task previously declared in `extra_tasks` will need to be placed inside `tasks` under `grumphp` tree.
+
+```diff yaml
+
+- extra_tasks:
+-   phpparser:
+-      ignore_patterns:
+-       - vendor/
+-
+- grumphp:
+-   extensions:
+-     - OpenEuropa\CodeReview\ExtraTasksExtension
+
++ grumphp:
++   tasks:
++     phpparser:
++      ignore_patterns:
++        - vendor/
+
+```
+
+In addition, PHP Mess Detector is no longer available as part of the configured tasks. The task and related parameters have been removed. If you wish to continue using PHP Mess Detector, you can add it as part of GrumPHP as previously described.
+
+All other conventions and parameters remain the same.

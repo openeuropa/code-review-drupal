@@ -1,0 +1,20 @@
+{
+  "name": "openeuropa/code-review-drupal",
+  "description": "OpenEuropa code review drupal component.",
+  "license": "EUPL-1.2",
+  "require": {
+    "php": ">=8.1",
+    "openeuropa/code-review": "OEL-3328-dev",
+    "drupal/coder": "^8.3.16",
+    "mglaman/phpstan-drupal": "^1.2",
+    "phpstan/phpstan-deprecation-rules": "^1.2",
+    "phpstan/extension-installer": "^1.4"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpro/grumphp-shim": true,
+      "phpstan/extension-installer": true
+    }
+  }
+}

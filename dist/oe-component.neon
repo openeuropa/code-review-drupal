@@ -1,8 +1,0 @@
-# Drop this file one we drop support for Drupal 10.
-includes:
-  - drupal.neon
-
-parameters:
-  ignoreErrors:
-    -
-      identifier: class.implementsDeprecatedInterface

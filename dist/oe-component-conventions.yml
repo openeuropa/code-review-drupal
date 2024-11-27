@@ -17,4 +17,3 @@ parameters:
   tasks.phpcs.ignore_patterns: '%oe-component-conventions.ignore_patterns%'
   tasks.phpstan.triggered_by: '%oe-component-conventions.triggerend_by%'
   tasks.phpstan.ignore_patterns: '%oe-component-conventions.ignore_patterns%'
-  tasks.phpstan.configuration: ./vendor/openeuropa/code-review-drupal/dist/oe-component.neon

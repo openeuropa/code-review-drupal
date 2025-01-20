@@ -8,3 +8,6 @@ parameters:
     - "#^Plugin definitions cannot be altered.#"
     - "#^Class .* extends @internal class#"
     - identifier: missingType.iterableValue
+
+    # Too many issues with supporting multiple Drupal versions.
+    - identifier: class.implementsDeprecatedInterface

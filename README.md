@@ -61,7 +61,35 @@ Below the list of task parameters can that be overridden on a per-project basis:
 - `tasks.phpstan.level`
 - `tasks.phpstan.force_patterns`
 - `tasks.phpstan.triggered_by`
+- `tasks.phpstan_deprecations.blocking`
 - `tasks.git_commit_message.matchers`
+
+### PHPStan deprecations
+
+Deprecations do not fail the build. PHPStan runs as two GrumPHP tasks:
+
+- `phpstan` reports every error except deprecations, and fails the run.
+- `phpstan_deprecations` reports only deprecations and is non-blocking: GrumPHP
+  lists them as failed (in yellow), but exits successfully.
+
+An error counts as a deprecation when its message contains the word
+"deprecated". This covers [phpstan-deprecation-rules](https://github.com/phpstan/phpstan-deprecation-rules)
+and the Drupal deprecation rules of [phpstan-drupal](https://github.com/mglaman/phpstan-drupal),
+such as `Not supporting attribute discovery is deprecated in drupal:11.2.0 and is removed from drupal:12.0.0.`
+
+Both tasks run your project's PHPStan configuration (`tasks.phpstan.configuration`),
+so its `excludePaths` and `ignoreErrors` apply to both. The configuration is passed
+to them through the `OPENEUROPA_PHPSTAN_CONFIGURATION` environment variable.
+
+Only GrumPHP treats deprecations as warnings: running PHPStan directly with your
+configuration still reports them as errors.
+
+To make deprecations fail the build again:
+
+```yaml
+parameters:
+  tasks.phpstan_deprecations.blocking: true
+```
 
 It is also possible to extend the list of tasks to be run by adding tasks under the `tasks:` tree as shown below:
 

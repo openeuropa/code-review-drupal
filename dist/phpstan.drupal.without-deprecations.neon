@@ -1,0 +1,14 @@
+# Configuration for the blocking "phpstan" GrumPHP task.
+#
+# Runs the project's PHPStan configuration, but ignores deprecations: these are
+# reported as warnings by the non-blocking "phpstan_deprecations" task instead.
+includes:
+  - phpstan.drupal.project.php
+
+parameters:
+  ignoreErrors:
+    # Matching on the message rather than on identifiers keeps new deprecation
+    # rules (e.g. from phpstan-drupal) covered without maintaining a list.
+    -
+      message: '#\bdeprecated\b#i'
+      reportUnmatched: false

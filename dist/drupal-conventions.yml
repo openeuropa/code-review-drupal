@@ -3,6 +3,12 @@ imports:
 
 grumphp:
 
+  environment:
+    variables:
+      # Read by dist/phpstan.drupal.project.php, so that both PHPStan tasks run
+      # the project's PHPStan configuration.
+      OPENEUROPA_PHPSTAN_CONFIGURATION: '%tasks.phpstan.configuration%'
+
   tasks:
 
     # PHP Code Sniffer.
@@ -17,16 +23,31 @@ grumphp:
       metadata:
         priority: 300
 
-    # PHP Stan.
+    # PHP Stan, everything except deprecations.
     phpstan:
       autoload_file: '%tasks.phpstan.autoload_file%'
-      configuration: '%tasks.phpstan.configuration%'
+      configuration: ./vendor/openeuropa/code-review-drupal/dist/phpstan.drupal.without-deprecations.neon
       level: '%tasks.phpstan.level%'
       force_patterns: '%tasks.phpstan.force_patterns%'
       ignore_patterns: '%tasks.phpstan.ignore_patterns%'
       triggered_by: '%tasks.phpstan.triggered_by%'
       memory_limit: "-1"
       use_grumphp_paths: true
+
+    # PHP Stan, deprecations only. Non-blocking by default: deprecations are
+    # reported as warnings without failing the run.
+    phpstan_deprecations:
+      autoload_file: '%tasks.phpstan.autoload_file%'
+      configuration: ./vendor/openeuropa/code-review-drupal/dist/phpstan.drupal.deprecations-only.neon
+      level: '%tasks.phpstan.level%'
+      force_patterns: '%tasks.phpstan.force_patterns%'
+      ignore_patterns: '%tasks.phpstan.ignore_patterns%'
+      triggered_by: '%tasks.phpstan.triggered_by%'
+      memory_limit: "-1"
+      use_grumphp_paths: true
+      metadata:
+        task: phpstan
+        blocking: '%tasks.phpstan_deprecations.blocking%'
 
     # Commit message format.
     git_commit_message:
@@ -47,3 +68,4 @@ parameters:
   tasks.phpcs.triggered_by: '%drupal-conventions.triggered_by%'
   tasks.phpstan.triggered_by: '%drupal-conventions.triggered_by%'
   tasks.phpstan.configuration: ./vendor/openeuropa/code-review-drupal/dist/phpstan.drupal.neon
+  tasks.phpstan_deprecations.blocking: false

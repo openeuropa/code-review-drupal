@@ -10,5 +10,5 @@ parameters:
     # Everything that is not a deprecation: the exact opposite of the pattern
     # in phpstan.drupal.without-deprecations.neon, keep both in sync.
     -
-      message: '#^(?!Deprecated in PHP|.*? deprecated\b)#s'
+      message: '#^(?![Dd]eprecated\b|.*? deprecated\b(?!\??:))#s'
       reportUnmatched: false

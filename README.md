@@ -72,12 +72,14 @@ Deprecations do not fail the build. PHPStan runs as two GrumPHP tasks:
 - `phpstan_deprecations` reports only deprecations and is non-blocking: GrumPHP
   lists them as failed (in yellow), but exits successfully.
 
-An error counts as a deprecation when its message uses deprecation wording,
-such as `Call to deprecated method ...` from [phpstan-deprecation-rules](https://github.com/phpstan/phpstan-deprecation-rules),
+An error counts as a deprecation when its message starts with "Deprecated" or
+contains " deprecated" as a word, such as `Call to deprecated method ...` from
+[phpstan-deprecation-rules](https://github.com/phpstan/phpstan-deprecation-rules),
 `Not supporting attribute discovery is deprecated in drupal:11.2.0 ...` from
 [phpstan-drupal](https://github.com/mglaman/phpstan-drupal) or `Deprecated in PHP 8.4: ...`.
-Errors whose message does not say "deprecated", even if they come from a
-deprecation rule, still fail the build.
+Names such as `$deprecated`, `Foo::deprecated()` or `array{deprecated: bool}` do
+not count. Errors worded differently, even if they come from a deprecation rule,
+still fail the build.
 
 Both tasks run your project's PHPStan configuration (`tasks.phpstan.configuration`),
 so its `excludePaths` and `ignoreErrors` apply to both.
@@ -89,9 +91,14 @@ Keep in mind that:
 
 - When selecting tasks with `--tasks` or in `testsuites`, include
   `phpstan_deprecations` next to `phpstan`, or deprecations are not reported.
-- Errors PHPStan cannot ignore, such as syntax errors, are reported by both tasks.
+- Errors PHPStan cannot ignore, such as syntax errors or ignore patterns that
+  are no longer matched, are reported by both tasks.
+- If your PHPStan baseline counts deprecations (`count:`), going over that count
+  fails the `phpstan` task: PHPStan reports the overflow as an error that cannot
+  be ignored.
 - Overriding the whole `phpstan` task in your `grumphp.yml` replaces this setup:
-  that task then reports deprecations as errors again.
+  that task then reports deprecations as errors again. To disable PHPStan,
+  disable both `phpstan` and `phpstan_deprecations`.
 - With `stop_on_failure: true`, deprecations are only reported when all other
   tasks pass, as `phpstan_deprecations` runs last.
 

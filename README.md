@@ -95,12 +95,19 @@ Keep in mind that:
 - With `stop_on_failure: true`, deprecations are only reported when all other
   tasks pass, as `phpstan_deprecations` runs last.
 
-To make deprecations fail the build again:
+To make deprecations fail the build again, set the `tasks.phpstan_deprecations.blocking`
+parameter in your project's `grumphp.yml.dist`, next to the other parameters:
 
 ```yaml
+imports:
+  - { resource: ./vendor/openeuropa/code-review-drupal/dist/drupal-conventions.yml }
+
 parameters:
   tasks.phpstan_deprecations.blocking: true
 ```
+
+Set it under `parameters:`, not under `grumphp: tasks:`: redefining the
+`phpstan_deprecations` task there replaces the whole task.
 
 It is also possible to extend the list of tasks to be run by adding tasks under the `tasks:` tree as shown below:
 

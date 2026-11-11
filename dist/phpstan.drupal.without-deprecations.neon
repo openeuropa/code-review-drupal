@@ -1,0 +1,17 @@
+# Configuration for the blocking "phpstan" GrumPHP task.
+#
+# Runs the project's PHPStan configuration, but ignores deprecations: these are
+# reported as warnings by the non-blocking "phpstan_deprecations" task instead.
+includes:
+  - phpstan.drupal.project.php
+
+parameters:
+  ignoreErrors:
+    # Deprecation messages ("Call to deprecated method", "is deprecated in
+    # drupal:11.2.0", "Deprecated in PHP 8.4"). Matching the wording rather
+    # than identifiers keeps new deprecation rules covered, while names such as
+    # $deprecated, Foo::deprecated() or array{deprecated: bool} do not match.
+    # Keep in sync with phpstan.drupal.deprecations-only.neon.
+    -
+      message: '#^[Dd]eprecated\b| deprecated\b(?!\??:)#'
+      reportUnmatched: false

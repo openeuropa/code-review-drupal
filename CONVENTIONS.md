@@ -21,6 +21,9 @@ These conventions can be used in your projects:
 - [phpstan/phpstan-deprecation-rules](https://github.com/phpstan/phpstan-deprecation-rules): this extension emits deprecation warnings on code.
 - [phpstan/extension-installer](https://github.com/phpstan/extension-installer): package autoconfigures PHPStan to load the previous packages.
 
+Deprecations are reported as non-blocking warnings by a separate `phpstan_deprecations` task, so they do not fail the build.
+See the [README](README.md#phpstan-deprecations) for details.
+
 ## Commit messages
 
 Valid default commit messages: `Issue #123: My commit.` or `OPENEUROPA-123: My commit.`

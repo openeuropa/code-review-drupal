@@ -7,9 +7,8 @@ includes:
 
 parameters:
   ignoreErrors:
+    # Everything that is not a deprecation: the exact opposite of the pattern
+    # in phpstan.drupal.without-deprecations.neon, keep both in sync.
     -
-      message: '#^(?!.*\bdeprecated\b)#is'
+      message: '#^(?!Deprecated in PHP|.*? deprecated\b)#s'
       reportUnmatched: false
-
-  # Keep a separate result cache so the two runs do not invalidate each other.
-  resultCachePath: %tmpDir%/resultCache.deprecations.php

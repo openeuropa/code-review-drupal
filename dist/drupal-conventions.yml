@@ -24,7 +24,7 @@ grumphp:
         priority: 300
 
     # PHP Stan, everything except deprecations.
-    phpstan:
+    phpstan: &phpstan
       autoload_file: '%tasks.phpstan.autoload_file%'
       configuration: ./vendor/openeuropa/code-review-drupal/dist/phpstan.drupal.without-deprecations.neon
       level: '%tasks.phpstan.level%'
@@ -35,19 +35,15 @@ grumphp:
       use_grumphp_paths: true
 
     # PHP Stan, deprecations only. Non-blocking by default: deprecations are
-    # reported as warnings without failing the run.
+    # reported as warnings without failing the run. Runs after "phpstan"
+    # rather than alongside it, as each run already uses every CPU core.
     phpstan_deprecations:
-      autoload_file: '%tasks.phpstan.autoload_file%'
+      <<: *phpstan
       configuration: ./vendor/openeuropa/code-review-drupal/dist/phpstan.drupal.deprecations-only.neon
-      level: '%tasks.phpstan.level%'
-      force_patterns: '%tasks.phpstan.force_patterns%'
-      ignore_patterns: '%tasks.phpstan.ignore_patterns%'
-      triggered_by: '%tasks.phpstan.triggered_by%'
-      memory_limit: "-1"
-      use_grumphp_paths: true
       metadata:
         task: phpstan
         blocking: '%tasks.phpstan_deprecations.blocking%'
+        priority: -100
 
     # Commit message format.
     git_commit_message:

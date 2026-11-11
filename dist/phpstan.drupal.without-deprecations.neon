@@ -7,8 +7,11 @@ includes:
 
 parameters:
   ignoreErrors:
-    # Matching on the message rather than on identifiers keeps new deprecation
-    # rules (e.g. from phpstan-drupal) covered without maintaining a list.
+    # Deprecation messages ("Call to deprecated method", "is deprecated in
+    # drupal:11.2.0", "Deprecated in PHP 8.4"). Matching the wording rather
+    # than identifiers keeps new deprecation rules covered, while names such as
+    # $deprecated or Foo::deprecated() do not match.
+    # Keep in sync with phpstan.drupal.deprecations-only.neon.
     -
-      message: '#\bdeprecated\b#i'
+      message: '#^Deprecated in PHP| deprecated\b#'
       reportUnmatched: false

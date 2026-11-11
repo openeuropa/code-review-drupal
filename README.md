@@ -72,17 +72,28 @@ Deprecations do not fail the build. PHPStan runs as two GrumPHP tasks:
 - `phpstan_deprecations` reports only deprecations and is non-blocking: GrumPHP
   lists them as failed (in yellow), but exits successfully.
 
-An error counts as a deprecation when its message contains the word
-"deprecated". This covers [phpstan-deprecation-rules](https://github.com/phpstan/phpstan-deprecation-rules)
-and the Drupal deprecation rules of [phpstan-drupal](https://github.com/mglaman/phpstan-drupal),
-such as `Not supporting attribute discovery is deprecated in drupal:11.2.0 and is removed from drupal:12.0.0.`
+An error counts as a deprecation when its message uses deprecation wording,
+such as `Call to deprecated method ...` from [phpstan-deprecation-rules](https://github.com/phpstan/phpstan-deprecation-rules),
+`Not supporting attribute discovery is deprecated in drupal:11.2.0 ...` from
+[phpstan-drupal](https://github.com/mglaman/phpstan-drupal) or `Deprecated in PHP 8.4: ...`.
+Errors whose message does not say "deprecated", even if they come from a
+deprecation rule, still fail the build.
 
 Both tasks run your project's PHPStan configuration (`tasks.phpstan.configuration`),
-so its `excludePaths` and `ignoreErrors` apply to both. The configuration is passed
-to them through the `OPENEUROPA_PHPSTAN_CONFIGURATION` environment variable.
+so its `excludePaths` and `ignoreErrors` apply to both.
 
 Only GrumPHP treats deprecations as warnings: running PHPStan directly with your
 configuration still reports them as errors.
+
+Keep in mind that:
+
+- When selecting tasks with `--tasks` or in `testsuites`, include
+  `phpstan_deprecations` next to `phpstan`, or deprecations are not reported.
+- Errors PHPStan cannot ignore, such as syntax errors, are reported by both tasks.
+- Overriding the whole `phpstan` task in your `grumphp.yml` replaces this setup:
+  that task then reports deprecations as errors again.
+- With `stop_on_failure: true`, deprecations are only reported when all other
+  tasks pass, as `phpstan_deprecations` runs last.
 
 To make deprecations fail the build again:
 
